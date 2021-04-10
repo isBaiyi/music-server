@@ -222,5 +222,16 @@ public class SongController {
         }
         return jsonObject;
     }
+
+    @PostMapping("selectById")
+    public Object selectById(HttpServletRequest request){
+        return songService.selectById(Integer.parseInt(request.getParameter("id").trim()));
+    }
+
+    @PostMapping("/selectByName")
+    public Object selectByName(HttpServletRequest request) {
+        System.out.println("songName = " + request.getParameter("songName").trim());
+        return songService.selectByName(request.getParameter("songName").trim());
+    }
 }
 

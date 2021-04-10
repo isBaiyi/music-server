@@ -18,6 +18,8 @@ public interface SongListService extends IService<SongList> {
 
     boolean update(HttpServletRequest request);
 
+    boolean delete(Integer id);
+
     SongList selectById(Integer id);
 
     List<SongList> selectAll();

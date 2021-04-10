@@ -27,6 +27,7 @@ public class SongListServiceImpl extends ServiceImpl<SongListMapper, SongList> i
     @Override
     public boolean insert(HttpServletRequest request) {
         SongList songList = conversion(request);
+        songList.setPic(request.getParameter("pic").trim());
         return songListMapper.insert(songList) > 0;
     }
 
@@ -34,6 +35,11 @@ public class SongListServiceImpl extends ServiceImpl<SongListMapper, SongList> i
     public boolean update(HttpServletRequest request) {
         SongList songList = conversion(request);
         return songListMapper.update(songList, new QueryWrapper<SongList>().eq("id", request.getParameter("id".trim()))) > 0;
+    }
+
+    @Override
+    public boolean delete(Integer id) {
+        return songListMapper.deleteById(id) > 0;
     }
 
     @Override
@@ -69,7 +75,6 @@ public class SongListServiceImpl extends ServiceImpl<SongListMapper, SongList> i
     public SongList conversion(HttpServletRequest request){
         SongList songList = new SongList();
         songList.setTitle(request.getParameter("title").trim());
-        songList.setPic(request.getParameter("pic").trim());
         songList.setIntroduction(request.getParameter("introduction").trim());
         songList.setStyle(request.getParameter("style").trim());
         return songList;

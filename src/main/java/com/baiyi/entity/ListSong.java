@@ -11,9 +11,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * <p>
  * 歌单包含歌曲列表
- * </p>
  *
  * @author 白衣
  * @since 2021-02-24

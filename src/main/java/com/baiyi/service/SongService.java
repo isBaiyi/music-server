@@ -25,7 +25,7 @@ public interface SongService extends IService<Song> {
     List<Song> selectAll();
 
     /**
-     * 根据歌曲名字模糊查询列表
+     * 根据歌曲名字查询列表
      * @param name 名字
      * @return 歌曲列表
      */
@@ -37,4 +37,5 @@ public interface SongService extends IService<Song> {
      * @return 歌曲列表
      */
     List<Song> selectBySingerId(Integer singerId);
+
 }
