@@ -38,5 +38,17 @@ public class FileConfig implements WebMvcConfigurer {
                 .addResourceLocations("file:" + System.getProperty("user.dir") +
                         System.getProperty("file.separator") + "song" +
                         System.getProperty("file.separator"));
+        // 前端用户头像地址定位
+        registry.addResourceHandler("/avatarImages/**")
+                // 通过 java 的方法进行获取到 avatarImages 的目录 这里兼容了 Linux 系统
+                .addResourceLocations("file:" + System.getProperty("user.dir") +
+                        System.getProperty("file.separator") + "avatarImages" +
+                        System.getProperty("file.separator"));
+        // 前端用户头像默认地址定位
+        registry.addResourceHandler("/img/**")
+                // 通过 java 的方法进行获取到 avatarImages 的目录 这里兼容了 Linux 系统
+                .addResourceLocations("file:" + System.getProperty("user.dir") +
+                        System.getProperty("file.separator") + "img" +
+                        System.getProperty("file.separator"));
     }
 }

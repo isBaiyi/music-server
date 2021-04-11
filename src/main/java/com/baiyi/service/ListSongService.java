@@ -33,7 +33,7 @@ public interface ListSongService extends IService<ListSong> {
 
     /**
      * 删除
-     * @param id
+     * @param request
      * @return
      */
     boolean delete(HttpServletRequest request);
