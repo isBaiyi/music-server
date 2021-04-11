@@ -233,5 +233,10 @@ public class SongController {
         System.out.println("songName = " + request.getParameter("songName").trim());
         return songService.selectByName(request.getParameter("songName").trim());
     }
+
+    @PostMapping("/selectAll")
+    public Object selectAll(){
+        return songService.selectAll();
+    }
 }
 
