@@ -2,10 +2,10 @@ package com.baiyi.controller;
 
 
 import com.alibaba.fastjson.JSONObject;
-import com.baiyi.entity.Singer;
 import com.baiyi.entity.SongList;
 import com.baiyi.service.SongListService;
 import com.baiyi.utils.Consts;
+import com.baiyi.utils.FileUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -75,9 +75,7 @@ public class SongListController {
      */
     @PostMapping("/delete")
     public Object delete(HttpServletRequest request) {
-        System.out.println("id = " + request.getParameter("id"));
-        System.out.println(Integer.parseInt(request.getParameter("id")));
-
+        FileUtil.deleteImg(songListService.selectById(Integer.parseInt(request.getParameter("id"))).getPic());
         return songListService.delete(Integer.parseInt(request.getParameter("id")));
     }
     /**
@@ -159,6 +157,7 @@ public class SongListController {
         // 存储到数据库里的相对文件地址
         String storeAvatarPath = "/img/singerPic/" + fileName;
         try {
+            FileUtil.deleteImg(songListService.selectById(id).getPic());
             // 上传文件
             avatarFile.transferTo(dest);
             SongList songList = new SongList();

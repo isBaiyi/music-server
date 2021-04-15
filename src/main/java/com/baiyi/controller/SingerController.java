@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.baiyi.entity.Singer;
 import com.baiyi.service.SingerService;
 import com.baiyi.utils.Consts;
+import com.baiyi.utils.FileUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -78,7 +79,8 @@ public class SingerController {
     public Object delete(HttpServletRequest request) {
         System.out.println("id = " + request.getParameter("id"));
         System.out.println(Integer.parseInt(request.getParameter("id")));
-
+        // 删除磁盘中的图片，释放资源
+        FileUtil.deleteImg(singerService.selectById(Integer.parseInt(request.getParameter("id"))).getPic());
         return singerService.delete(Integer.parseInt(request.getParameter("id")));
     }
 
@@ -150,6 +152,8 @@ public class SingerController {
         // 存储到数据库里的相对文件地址
         String storeAvatarPath = "/img/singerPic/" + fileName;
         try {
+            // 先删除原先磁盘中的歌曲图标
+            FileUtil.deleteImg(singerService.selectById(id).getPic());
             // 上传文件
             avatarFile.transferTo(dest);
             Singer singer = new Singer();

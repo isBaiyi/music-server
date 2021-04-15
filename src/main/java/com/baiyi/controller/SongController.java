@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.baiyi.entity.Song;
 import com.baiyi.service.SongService;
 import com.baiyi.utils.Consts;
+import com.baiyi.utils.FileUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -114,9 +115,7 @@ public class SongController {
      */
     @PostMapping("/deleteSong")
     public Object deleteSong(HttpServletRequest request){
-        System.out.println("id = " + request.getParameter("id"));
-        System.out.println(Integer.parseInt(request.getParameter("id")));
-        // todo 根据 id 在数据库找到对应的歌曲文件，然后删除磁盘的歌曲 此处使用的是逻辑删除，删不删除都可以
+        FileUtil.deleteImg(songService.selectById(Integer.parseInt(request.getParameter("id"))).getPic());
 
         return songService.delete(Integer.parseInt(request.getParameter("id")));
     }
@@ -150,6 +149,8 @@ public class SongController {
         // 存储到数据库里的相对文件地址
         String storeAvatarPath = "/img/songPic/" + fileName;
         try {
+            // 删除删除磁盘中的图片
+            FileUtil.deleteImg(songService.selectById(id).getPic());
             // 上传文件
             avatarFile.transferTo(dest);
             Song song = new Song();
@@ -180,7 +181,6 @@ public class SongController {
      */
     @PostMapping("/updateSongUrl")
     public Object updateSongUrl(@RequestParam("file")MultipartFile avatarFile, @RequestParam("id") int id){
-        // todo 先找到之前的文件，删除再修改
         JSONObject jsonObject = new JSONObject();
         if (avatarFile.isEmpty()){
             jsonObject.put(Consts.CODE, 0);
@@ -201,6 +201,8 @@ public class SongController {
         // 存储到数据库里的相对文件地址
         String storeAvatarPath = "song" + fileName;
         try {
+            // 删除磁盘中之前的歌曲文件
+            FileUtil.deleteSong(songService.selectById(id).getUrl());
             // 上传文件
             avatarFile.transferTo(dest);
             Song song = new Song();

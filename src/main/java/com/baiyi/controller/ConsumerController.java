@@ -3,9 +3,9 @@ package com.baiyi.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.baiyi.entity.Consumer;
-import com.baiyi.entity.Singer;
 import com.baiyi.service.ConsumerService;
 import com.baiyi.utils.Consts;
+import com.baiyi.utils.FileUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -71,6 +71,7 @@ public class ConsumerController {
 
     @PostMapping("/delete")
     public Object delete(HttpServletRequest request) {
+        FileUtil.deleteConsumerImg(consumerService.selectById(Integer.parseInt(request.getParameter("id"))).getAvatar());
         return consumerService.delete(Integer.parseInt(request.getParameter("id")));
     }
 
@@ -113,6 +114,8 @@ public class ConsumerController {
         // 存储到数据库里的相对文件地址
         String storeAvatarPath = "/avatarImages/" + fileName;
         try {
+            // 先删除磁盘中之前的用户图片
+            FileUtil.deleteConsumerImg(consumerService.selectById(id).getAvatar());
             // 上传文件
             avatarFile.transferTo(dest);
             Consumer consumer = new Consumer();
