@@ -1,12 +1,11 @@
 package com.baiyi.service.impl;
 
 import com.baiyi.entity.Consumer;
-import com.baiyi.entity.Singer;
 import com.baiyi.mapper.ConsumerMapper;
 import com.baiyi.service.ConsumerService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
@@ -26,6 +25,9 @@ public class ConsumerServiceImpl extends ServiceImpl<ConsumerMapper, Consumer> i
 
     @Autowired
     private ConsumerMapper consumerMapper;
+
+    @Value("${jasypt.encryptor.password}")
+    private String secretKey;
 
     @Override
     public boolean insert(HttpServletRequest request) {
@@ -70,6 +72,7 @@ public class ConsumerServiceImpl extends ServiceImpl<ConsumerMapper, Consumer> i
         Consumer consumer = new Consumer();
         consumer.setUsername(request.getParameter("username").trim());
         consumer.setPassword(request.getParameter("password").trim());
+        // todo 入库前密码加密
         consumer.setSex(new Byte(request.getParameter("sex").trim()));
         consumer.setPhoneNum(request.getParameter("phoneNum").trim());
         consumer.setEmail(request.getParameter("email").trim());

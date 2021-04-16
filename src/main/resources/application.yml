@@ -26,3 +26,7 @@ mybatis-plus:
       logic-not-delete-value: 1 # 逻辑未删除值(默认为 0)
       logic-delete-value: 0 # 逻辑已删除值(默认为 1)
 
+# 加密算法配置      默认使用的加密算法是 PBEWithMD%AndDES
+jasypt:
+  encryptor:
+    password: azfa23!-d  # 加密密钥

@@ -5,7 +5,9 @@ import com.baiyi.mapper.AdminMapper;
 import com.baiyi.service.AdminService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.jasypt.util.text.BasicTextEncryptor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 /**
@@ -19,11 +21,17 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
     @Autowired
     private AdminMapper adminMapper;
 
+    @Value("${jasypt.encryptor.password}")
+    private String secretKey;
+
     @Override
     public boolean verifyPassword(String username, String password) {
         QueryWrapper<Admin> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("name", username);
-        queryWrapper.eq("password", password);
-        return adminMapper.selectOne(queryWrapper) != null;
+        Admin admin = adminMapper.selectOne(queryWrapper);
+        BasicTextEncryptor encryptor = new BasicTextEncryptor();
+        encryptor.setPassword(secretKey);
+        // 根据数据库查询到的密码进行解密与原先的密码就完成登录，否则登录失败
+        return encryptor.decrypt(admin.getPassword()).equals(password);
     }
 }
