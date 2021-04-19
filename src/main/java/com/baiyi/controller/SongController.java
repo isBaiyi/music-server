@@ -1,11 +1,10 @@
 package com.baiyi.controller;
 
 
-import com.alibaba.fastjson.JSONObject;
 import com.baiyi.entity.Song;
 import com.baiyi.service.SongService;
-import com.baiyi.utils.Consts;
 import com.baiyi.utils.FileUtil;
+import com.baiyi.utils.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -37,12 +36,9 @@ public class SongController {
      */
     @PostMapping("/insert")
     public Object insert(HttpServletRequest request, @RequestParam("file") MultipartFile mpFile) {
-        JSONObject jsonObject = new JSONObject();
         //上传歌曲文件
         if (mpFile.isEmpty()) {
-            jsonObject.put(Consts.CODE, 0);
-            jsonObject.put(Consts.MSG, "歌曲上传失败");
-            return jsonObject;
+            return ResponseUtil.failRsp("歌曲上传失败");
         }
         //文件名=当前时间到毫秒+原来的文件名
         String fileName = System.currentTimeMillis() + mpFile.getOriginalFilename();
@@ -63,19 +59,12 @@ public class SongController {
             song.setUrl(storeUrlPath);
             boolean flag = songService.insert(request, song);
             if (flag) {
-                jsonObject.put(Consts.CODE, 1);
-                jsonObject.put(Consts.MSG, "保存成功");
-                jsonObject.put("avatar", storeUrlPath);
-                return jsonObject;
+                return ResponseUtil.successRsp("保存成功", "avatar", storeUrlPath);
             }
-            jsonObject.put(Consts.CODE, 0);
-            jsonObject.put(Consts.MSG, "保存失败");
-            return jsonObject;
+            return ResponseUtil.failRsp("保存失败");
         } catch (IOException e) {
-            jsonObject.put(Consts.CODE, 0);
-            jsonObject.put(Consts.MSG, "保存失败" + e.getMessage());
+            return ResponseUtil.failRsp("保存失败" + e.getMessage());
         }
-        return jsonObject;
     }
 
     /**
@@ -96,16 +85,11 @@ public class SongController {
      */
     @PostMapping("/updateSong")
     public Object updateSong(HttpServletRequest request){
-        JSONObject jsonObject = new JSONObject();
         boolean result = songService.update(request);
         if (result) {
-            jsonObject.put(Consts.CODE, 1);
-            jsonObject.put(Consts.MSG, "修改成功");
-            return jsonObject;
+            return ResponseUtil.successRsp("修改成功");
         }
-        jsonObject.put(Consts.CODE, 0);
-        jsonObject.put(Consts.MSG, "修改失败");
-        return jsonObject;
+        return ResponseUtil.failRsp("修改失败");
     }
 
     /**
@@ -128,11 +112,8 @@ public class SongController {
      */
     @PostMapping("/updateSongPic")
     public Object updateSongPic(@RequestParam("file")MultipartFile avatarFile, @RequestParam("id") int id){
-        JSONObject jsonObject = new JSONObject();
         if (avatarFile.isEmpty()){
-            jsonObject.put(Consts.CODE, 0);
-            jsonObject.put(Consts.MSG, "文件上传失败");
-            return jsonObject;
+            return ResponseUtil.failRsp("文件上传失败");
         }
         // 文件名 = 当前时间到毫秒 + 原来的文件名
         String fileName = System.currentTimeMillis() + avatarFile.getOriginalFilename();
@@ -158,19 +139,12 @@ public class SongController {
             song.setPic(storeAvatarPath);
             boolean result = songService.updateById(song);
             if (result){
-                jsonObject.put(Consts.CODE, 1);
-                jsonObject.put(Consts.MSG, "上传成功");
-                jsonObject.put("pic", storeAvatarPath);
-                return jsonObject;
+                return ResponseUtil.successRsp("上传成功", "pic", storeAvatarPath);
             }
-            jsonObject.put(Consts.CODE, 0);
-            jsonObject.put(Consts.MSG, "上传失败");
-            return jsonObject;
+            return ResponseUtil.failRsp("上传失败");
         } catch (IOException e) {
-            jsonObject.put(Consts.CODE, 0);
-            jsonObject.put(Consts.MSG, "上传失败" + e.getMessage());
+            return ResponseUtil.failRsp("上传失败" + e.getMessage());
         }
-        return jsonObject;
     }
 
     /**
@@ -181,11 +155,8 @@ public class SongController {
      */
     @PostMapping("/updateSongUrl")
     public Object updateSongUrl(@RequestParam("file")MultipartFile avatarFile, @RequestParam("id") int id){
-        JSONObject jsonObject = new JSONObject();
         if (avatarFile.isEmpty()){
-            jsonObject.put(Consts.CODE, 0);
-            jsonObject.put(Consts.MSG, "文件上传失败");
-            return jsonObject;
+            return ResponseUtil.failRsp("文件上传失败");
         }
         // 文件名 = 当前时间到毫秒 + 原来的文件名
         String fileName = System.currentTimeMillis() + avatarFile.getOriginalFilename();
@@ -210,19 +181,12 @@ public class SongController {
             song.setUrl(storeAvatarPath);
             boolean result = songService.updateById(song);
             if (result){
-                jsonObject.put(Consts.CODE, 1);
-                jsonObject.put(Consts.MSG, "上传成功");
-                jsonObject.put("avatar", storeAvatarPath);
-                return jsonObject;
+                return ResponseUtil.successRsp("上传成功");
             }
-            jsonObject.put(Consts.CODE, 0);
-            jsonObject.put(Consts.MSG, "上传失败");
-            return jsonObject;
+            return ResponseUtil.failRsp("上传失败");
         } catch (IOException e) {
-            jsonObject.put(Consts.CODE, 0);
-            jsonObject.put(Consts.MSG, "上传失败" + e.getMessage());
+            return ResponseUtil.failRsp("文件上传失败" + e.getMessage());
         }
-        return jsonObject;
     }
 
     @PostMapping("selectById")

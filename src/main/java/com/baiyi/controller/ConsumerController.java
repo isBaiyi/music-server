@@ -4,8 +4,8 @@ package com.baiyi.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.baiyi.entity.Consumer;
 import com.baiyi.service.ConsumerService;
-import com.baiyi.utils.Consts;
 import com.baiyi.utils.FileUtil;
+import com.baiyi.utils.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,39 +34,26 @@ public class ConsumerController {
     @PostMapping("/insert")
     public Object insert(HttpServletRequest request) {
         JSONObject jsonObject = new JSONObject();
-        if (request.getParameter("username") == null || request.getParameter("username").equals("")) {
-            jsonObject.put(Consts.CODE, 0);
-            jsonObject.put(Consts.MSG, "用户名不能为空");
-            return jsonObject;
+        if (request.getParameter("username") == null || "".equals(request.getParameter("username"))) {
+            return ResponseUtil.failRsp("用户名不能为空");
         }
-        if (request.getParameter("password") == null || request.getParameter("password").equals("")) {
-            jsonObject.put(Consts.CODE, 0);
-            jsonObject.put(Consts.MSG, "密码不能为空");
-            return jsonObject;
+        if (request.getParameter("password") == null || "".equals(request.getParameter("password"))) {
+            return ResponseUtil.failRsp("密码不能为空");
         }
         boolean result = consumerService.insert(request);
         if (result) {
-            jsonObject.put(Consts.CODE, 1);
-            jsonObject.put(Consts.MSG, "添加成功");
-            return jsonObject;
+            return ResponseUtil.successRsp("添加成功");
         }
-        jsonObject.put(Consts.CODE, 0);
-        jsonObject.put(Consts.MSG, "添加失败");
-        return jsonObject;
+        return ResponseUtil.failRsp("添加失败");
     }
 
     @PostMapping("/update")
     public Object update(HttpServletRequest request) {
-        JSONObject jsonObject = new JSONObject();
         boolean result = consumerService.update(request);
         if (result) {
-            jsonObject.put(Consts.CODE, 1);
-            jsonObject.put(Consts.MSG, "修改成功");
-            return jsonObject;
+            return ResponseUtil.successRsp("修改成功");
         }
-        jsonObject.put(Consts.CODE, 0);
-        jsonObject.put(Consts.MSG, "修改失败");
-        return jsonObject;
+        return ResponseUtil.failRsp("修改失败");
     }
 
     @PostMapping("/delete")
@@ -95,9 +82,7 @@ public class ConsumerController {
     public Object updateSingerPic(@RequestParam("file") MultipartFile avatarFile, @RequestParam("id") int id){
         JSONObject jsonObject = new JSONObject();
         if (avatarFile.isEmpty()){
-            jsonObject.put(Consts.CODE, 0);
-            jsonObject.put(Consts.MSG, "文件上传失败");
-            return jsonObject;
+            return ResponseUtil.failRsp("文件上传失败");
         }
         // 文件名 = 当前时间到毫秒 + 原来的文件名
         String fileName = System.currentTimeMillis() + avatarFile.getOriginalFilename();
@@ -123,19 +108,12 @@ public class ConsumerController {
             consumer.setAvatar(storeAvatarPath);
             boolean result = consumerService.updateById(consumer);
             if (result){
-                jsonObject.put(Consts.CODE, 1);
-                jsonObject.put(Consts.MSG, "上传成功");
-                jsonObject.put("avatar", storeAvatarPath);
-                return jsonObject;
+                return ResponseUtil.successRsp("上传成功", "avatar", storeAvatarPath);
             }
-            jsonObject.put(Consts.CODE, 0);
-            jsonObject.put(Consts.MSG, "上传失败");
-            return jsonObject;
+            return ResponseUtil.failRsp("上传失败");
         } catch (IOException e) {
-            jsonObject.put(Consts.CODE, 0);
-            jsonObject.put(Consts.MSG, "上传失败" + e.getMessage());
+            return ResponseUtil.failRsp("上传失败" + e.getMessage());
         }
-        return jsonObject;
     }
 }
 

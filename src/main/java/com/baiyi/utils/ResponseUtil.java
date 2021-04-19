@@ -27,13 +27,15 @@ public class ResponseUtil {
      * 封装成功返回信息
      *
      * @param successMsg 成功信息
-     * @param extMsg 额外信息
+     * @param extKey 额外信息主键
+     * @param extValue 额外信息值
      * @return jsonObject
      */
-    public static Object successRsp(String successMsg, String extMsg) {
+    public static Object successRsp(String successMsg, String extKey, String extValue) {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put(Consts.CODE, 1);
         jsonObject.put(Consts.MSG, successMsg);
+        jsonObject.put(extKey, extValue);
         return jsonObject;
     }
 

@@ -17,5 +17,5 @@ public interface AdminService extends IService<Admin> {
      * @param password 前端传进来的密码
      * @return 结果
      */
-    boolean verifyPassword(String username, String password);
+    Admin verifyPassword(String username, String password);
 }

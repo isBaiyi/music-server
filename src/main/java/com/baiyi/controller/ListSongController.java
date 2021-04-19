@@ -1,9 +1,8 @@
 package com.baiyi.controller;
 
 
-import com.alibaba.fastjson.JSONObject;
 import com.baiyi.service.ListSongService;
-import com.baiyi.utils.Consts;
+import com.baiyi.utils.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,30 +27,20 @@ public class ListSongController {
 
     @PostMapping("/insert")
     public Object insert(HttpServletRequest request) {
-        JSONObject jsonObject = new JSONObject();
         boolean flag = listSongService.insert(request);
         if (flag) {
-            jsonObject.put(Consts.CODE, 1);
-            jsonObject.put(Consts.MSG, "保存成功");
-            return jsonObject;
+            return ResponseUtil.successRsp("添加成功");
         }
-        jsonObject.put(Consts.CODE, 0);
-        jsonObject.put(Consts.MSG, "保存失败");
-        return jsonObject;
+        return ResponseUtil.failRsp("添加失败");
     }
 
     @PostMapping("/update")
     public Object update(HttpServletRequest request) {
-        JSONObject jsonObject = new JSONObject();
         boolean flag = listSongService.update(request);
         if (flag) {
-            jsonObject.put(Consts.CODE, 1);
-            jsonObject.put(Consts.MSG, "保存成功");
-            return jsonObject;
+            return ResponseUtil.successRsp("修改成功");
         }
-        jsonObject.put(Consts.CODE, 0);
-        jsonObject.put(Consts.MSG, "保存失败");
-        return jsonObject;
+        return ResponseUtil.failRsp("修改失败");
     }
 
     @PostMapping("/delete")
