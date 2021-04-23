@@ -3,7 +3,9 @@ package com.baiyi.service.impl;
 import com.baiyi.entity.Consumer;
 import com.baiyi.mapper.ConsumerMapper;
 import com.baiyi.service.ConsumerService;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.jasypt.util.text.BasicTextEncryptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -63,6 +65,13 @@ public class ConsumerServiceImpl extends ServiceImpl<ConsumerMapper, Consumer> i
         return consumerMapper.updateById(consumer) > 0;
     }
 
+    @Override
+    public Consumer verifyPassword(String username, String password) {
+        QueryWrapper<Consumer> wrapper = new QueryWrapper<>();
+        wrapper.eq("username", username);
+        return consumerMapper.selectOne(wrapper);
+    }
+
     /**
      * 把前端传进来的 http 请求转换为 对象
      * @param request http请求
@@ -71,8 +80,14 @@ public class ConsumerServiceImpl extends ServiceImpl<ConsumerMapper, Consumer> i
     public Consumer conversion(HttpServletRequest request){
         Consumer consumer = new Consumer();
         consumer.setUsername(request.getParameter("username").trim());
-        consumer.setPassword(request.getParameter("password").trim());
+        String password = request.getParameter("password").trim();
         // todo 入库前密码加密
+        if (!password.equals("")){
+            BasicTextEncryptor encryptor = new BasicTextEncryptor();
+            encryptor.setPassword(secretKey);
+            String encrypt = encryptor.encrypt(password);
+            consumer.setPassword(encrypt);
+        }
         consumer.setSex(new Byte(request.getParameter("sex").trim()));
         consumer.setPhoneNum(request.getParameter("phoneNum").trim());
         consumer.setEmail(request.getParameter("email").trim());

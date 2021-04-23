@@ -200,6 +200,17 @@ public class SongController {
         return songService.selectByName(request.getParameter("songName").trim());
     }
 
+    /**
+     * 根据歌曲名进行模糊查询
+     * @param request 前端传进来的参数
+     * @return 结果
+     */
+    @PostMapping("/selectByNameLike")
+    public Object selectByNameLike(HttpServletRequest request) {
+        System.out.println("songName = " + request.getParameter("songName").trim());
+        return songService.selectByNameLike(request.getParameter("songName").trim());
+    }
+
     @PostMapping("/selectAll")
     public Object selectAll(){
         return songService.selectAll();

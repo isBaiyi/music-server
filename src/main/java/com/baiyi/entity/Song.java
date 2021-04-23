@@ -35,7 +35,7 @@ public class Song implements Serializable {
     private Integer singerId;
 
     /**
-     * 革命
+     * 歌名
      */
     private String name;
 

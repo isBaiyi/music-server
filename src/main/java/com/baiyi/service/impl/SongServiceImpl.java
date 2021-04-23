@@ -61,6 +61,11 @@ public class SongServiceImpl extends ServiceImpl<SongMapper, Song> implements So
     }
 
     @Override
+    public List<Song> selectByNameLike(String name) {
+        return songMapper.selectList(new QueryWrapper<Song>().like("name", name));
+    }
+
+    @Override
     public List<Song> selectBySingerId(Integer singerId) {
         return songMapper.selectList(new QueryWrapper<Song>().like("singer_id", singerId));
     }

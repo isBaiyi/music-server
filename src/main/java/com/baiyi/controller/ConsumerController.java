@@ -4,9 +4,12 @@ package com.baiyi.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.baiyi.entity.Consumer;
 import com.baiyi.service.ConsumerService;
+import com.baiyi.utils.Consts;
 import com.baiyi.utils.FileUtil;
 import com.baiyi.utils.ResponseUtil;
+import org.jasypt.util.text.BasicTextEncryptor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -14,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -31,14 +35,20 @@ public class ConsumerController {
     @Autowired
     private ConsumerService consumerService;
 
+    @Value("${jasypt.encryptor.password}")
+    private String secretKey;
+
     @PostMapping("/insert")
     public Object insert(HttpServletRequest request) {
-        JSONObject jsonObject = new JSONObject();
-        if (request.getParameter("username") == null || "".equals(request.getParameter("username"))) {
+        String username = request.getParameter("username");
+        if (username == null || "".equals(username)) {
             return ResponseUtil.failRsp("用户名不能为空");
         }
         if (request.getParameter("password") == null || "".equals(request.getParameter("password"))) {
             return ResponseUtil.failRsp("密码不能为空");
+        }
+        if (consumerService.verifyPassword(username, "") != null){
+            return ResponseUtil.failRsp("用户名已存在");
         }
         boolean result = consumerService.insert(request);
         if (result) {
@@ -114,6 +124,25 @@ public class ConsumerController {
         } catch (IOException e) {
             return ResponseUtil.failRsp("上传失败" + e.getMessage());
         }
+    }
+
+    @PostMapping(value = "/login")
+    public Object loginStatus(HttpServletRequest request, HttpSession session) {
+        String name = request.getParameter("username");
+        String password = request.getParameter("password");
+        Consumer consumer = consumerService.verifyPassword(name, password);
+        if (consumer == null){
+            return ResponseUtil.failRsp("用户不存在，请重新输入");
+        }
+        BasicTextEncryptor encryptor = new BasicTextEncryptor();
+        encryptor.setPassword(secretKey);
+        // 根据数据库查询到的密码进行解密与原先的密码就完成登录，否则登录失败
+        if (encryptor.decrypt(consumer.getPassword()).equals(password)){
+            session.setAttribute(Consts.NAME, name);
+            return ResponseUtil.successRsp("登录成功");
+        }
+        System.out.println("----");
+        return ResponseUtil.failRsp("密码错误，请重新输入");
     }
 }
 

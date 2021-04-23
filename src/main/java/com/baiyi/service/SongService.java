@@ -32,6 +32,13 @@ public interface SongService extends IService<Song> {
     List<Song> selectByName(String name);
 
     /**
+     * 根据歌曲名字模糊列表
+     * @param name 名字
+     * @return 歌曲列表
+     */
+    List<Song> selectByNameLike(String name);
+
+    /**
      * 根据歌手id查询歌曲列表
      * @param singerId 歌手id
      * @return 歌曲列表

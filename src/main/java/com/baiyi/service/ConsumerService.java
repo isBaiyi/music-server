@@ -1,7 +1,6 @@
 package com.baiyi.service;
 
 import com.baiyi.entity.Consumer;
-import com.baiyi.entity.Singer;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -26,4 +25,6 @@ public interface ConsumerService extends IService<Consumer> {
     List<Consumer> selectAll();
 
     boolean updateById(Consumer consumer);
+
+    Consumer verifyPassword(String username, String password);
 }
