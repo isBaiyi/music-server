@@ -39,7 +39,7 @@ public class Comment implements Serializable {
     /**
      * 评论类型（0歌曲1歌单）
      */
-    private Boolean type;
+    private Integer type;
 
     /**
      * 歌曲id

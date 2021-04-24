@@ -1,7 +1,6 @@
 package com.baiyi.controller;
 
 
-import com.alibaba.fastjson.JSONObject;
 import com.baiyi.entity.Consumer;
 import com.baiyi.service.ConsumerService;
 import com.baiyi.utils.Consts;
@@ -90,7 +89,6 @@ public class ConsumerController {
      */
     @PostMapping("/updateConsumerPic")
     public Object updateSingerPic(@RequestParam("file") MultipartFile avatarFile, @RequestParam("id") int id){
-        JSONObject jsonObject = new JSONObject();
         if (avatarFile.isEmpty()){
             return ResponseUtil.failRsp("文件上传失败");
         }
