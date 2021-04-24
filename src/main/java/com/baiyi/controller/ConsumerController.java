@@ -48,7 +48,7 @@ public class ConsumerController {
             return ResponseUtil.failRsp("密码不能为空");
         }
         if (consumerService.verifyPassword(username, "") != null){
-            return ResponseUtil.failRsp("用户名已存在");
+            return ResponseUtil.failRsp("2", "用户名已存在");
         }
         boolean result = consumerService.insert(request);
         if (result) {
@@ -132,17 +132,18 @@ public class ConsumerController {
         String password = request.getParameter("password");
         Consumer consumer = consumerService.verifyPassword(name, password);
         if (consumer == null){
-            return ResponseUtil.failRsp("用户不存在，请重新输入");
+            return ResponseUtil.failRsp("3", "用户不存在，请重新输入");
         }
         BasicTextEncryptor encryptor = new BasicTextEncryptor();
         encryptor.setPassword(secretKey);
         // 根据数据库查询到的密码进行解密与原先的密码就完成登录，否则登录失败
         if (encryptor.decrypt(consumer.getPassword()).equals(password)){
             session.setAttribute(Consts.NAME, name);
-            return ResponseUtil.successRsp("登录成功");
+            //  返回用户信息给前台
+            return ResponseUtil.successRsp("登录成功", "userMsg", consumer);
         }
         System.out.println("----");
-        return ResponseUtil.failRsp("密码错误，请重新输入");
+        return ResponseUtil.failRsp("4", "密码错误，请重新输入");
     }
 }
 

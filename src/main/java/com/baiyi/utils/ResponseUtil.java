@@ -39,6 +39,14 @@ public class ResponseUtil {
         return jsonObject;
     }
 
+    public static Object successRsp(String successMsg, String extKey, Object object) {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put(Consts.CODE, 1);
+        jsonObject.put(Consts.MSG, successMsg);
+        jsonObject.put(extKey, object);
+        return jsonObject;
+    }
+
     /**
      * 封装失败返回信息
      *
@@ -56,12 +64,12 @@ public class ResponseUtil {
      * 封装失败返回信息
      *
      * @param failMsg 失败信息
-     * @param extMsg 额外信息
+     * @param key 额外信息
      * @return jsonObject
      */
-    public static Object failRsp(String failMsg, String extMsg) {
+    public static Object failRsp(String key, String failMsg) {
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put(Consts.CODE, 0);
+        jsonObject.put(Consts.CODE, key);
         jsonObject.put(Consts.MSG, failMsg);
         return jsonObject;
     }

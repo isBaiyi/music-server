@@ -3,6 +3,8 @@ package com.baiyi.service;
 import com.baiyi.entity.Rank;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * <p>
  * 评价 服务类
@@ -13,4 +15,26 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface RankService extends IService<Rank> {
 
+    boolean insert(HttpServletRequest request);
+
+    /**
+     * 查询歌单总分
+     * @param songListId 歌单ID
+     * @return 分数
+     */
+    int selectScoreNum(Integer songListId);
+
+    /**
+     * 查询歌单参与评分总人数
+     * @param songListId 歌单ID
+     * @return 人数
+     */
+    int selectRankNum(Integer songListId);
+
+    /**
+     * 计算平均分
+     * @param songListId 歌单ID
+     * @return 平均分
+     */
+    int rankOfSongListId(Integer songListId);
 }
