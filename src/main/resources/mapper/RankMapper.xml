@@ -9,4 +9,27 @@
     <select id="selectRankNum" resultType="java.lang.Integer" parameterType="java.lang.Integer">
         select COALESCE(sum(id), 0) as num from rank where song_list_id = #{songListId}
     </select>
+
+    <select id="getRankList" resultType="com.baiyi.response.RankListResponse">
+        SELECT DISTINCT
+            song.`name` songName,
+            song.id songId,
+            singer.`name` singerName,
+            singer.id singerId,
+            song.url songUrl,
+            song.pic songPic,
+            song.lyric songLyric,
+            song.play_count songPlayCount
+        FROM
+            song
+                LEFT JOIN singer ON song.singer_id = singer.id
+                LEFT JOIN list_song ON list_song.song_id = song.id
+        WHERE
+            song.void_flag = 1
+          AND singer.void_flag = 1
+          AND list_song.void_flag = 1
+        ORDER BY
+            song.play_count DESC
+            LIMIT 50
+    </select>
 </mapper>

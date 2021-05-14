@@ -52,7 +52,14 @@ public class ConsumerServiceImpl extends ServiceImpl<ConsumerMapper, Consumer> i
 
     @Override
     public Consumer selectById(Integer id) {
-        return consumerMapper.selectById(id);
+        Consumer consumer = consumerMapper.selectById(id);
+        BasicTextEncryptor encryptor = new BasicTextEncryptor();
+        // 此处需要注意的查询的密码需要解密返回给前台客户
+        encryptor.setPassword(secretKey);
+        String encrypt = encryptor.decrypt(consumer.getPassword());
+        System.out.println("encrypt = " + encrypt);
+        consumer.setPassword(encrypt);
+        return consumer;
     }
 
     @Override
@@ -70,6 +77,11 @@ public class ConsumerServiceImpl extends ServiceImpl<ConsumerMapper, Consumer> i
         QueryWrapper<Consumer> wrapper = new QueryWrapper<>();
         wrapper.eq("username", username);
         return consumerMapper.selectOne(wrapper);
+    }
+
+    @Override
+    public Consumer selectByPrimaryKey(Integer id) {
+        return consumerMapper.selectById(id);
     }
 
     /**

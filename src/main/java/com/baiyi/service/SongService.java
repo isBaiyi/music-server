@@ -45,4 +45,10 @@ public interface SongService extends IService<Song> {
      */
     List<Song> selectBySingerId(Integer singerId);
 
+    /**
+     * 增加歌曲播放量
+     * @param id 歌曲ID
+     * @return
+     */
+    boolean increaseCount(Integer id);
 }

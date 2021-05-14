@@ -13,4 +13,10 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface SongMapper extends BaseMapper<Song> {
 
+    /**
+     * 增加歌曲播放量
+     * @param id 歌曲ID
+     * @return
+     */
+    int increaseCount(Integer id);
 }

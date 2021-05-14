@@ -2,12 +2,14 @@ package com.baiyi.service.impl;
 
 import com.baiyi.entity.Rank;
 import com.baiyi.mapper.RankMapper;
+import com.baiyi.response.RankListResponse;
 import com.baiyi.service.RankService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * <p>
@@ -50,5 +52,10 @@ public class RankServiceImpl extends ServiceImpl<RankMapper, Rank> implements Ra
             return 0;
         }
         return rankMapper.selectScoreNum(songListId) / rankNum;
+    }
+
+    @Override
+    public List<RankListResponse> getRankList() {
+        return rankMapper.getRankList();
     }
 }

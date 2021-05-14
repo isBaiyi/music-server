@@ -1,9 +1,11 @@
 package com.baiyi.service;
 
 import com.baiyi.entity.Rank;
+import com.baiyi.response.RankListResponse;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * <p>
@@ -37,4 +39,6 @@ public interface RankService extends IService<Rank> {
      * @return 平均分
      */
     int rankOfSongListId(Integer songListId);
+
+    List<RankListResponse> getRankList();
 }

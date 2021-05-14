@@ -108,7 +108,7 @@ public class ConsumerController {
         String storeAvatarPath = "/avatarImages/" + fileName;
         try {
             // 先删除磁盘中之前的用户图片
-            FileUtil.deleteConsumerImg(consumerService.selectById(id).getAvatar());
+            FileUtil.deleteConsumerImg(consumerService.selectByPrimaryKey(id).getAvatar());
             // 上传文件
             avatarFile.transferTo(dest);
             Consumer consumer = new Consumer();

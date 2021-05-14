@@ -27,4 +27,6 @@ public interface ConsumerService extends IService<Consumer> {
     boolean updateById(Consumer consumer);
 
     Consumer verifyPassword(String username, String password);
+
+    Consumer selectByPrimaryKey(Integer id);
 }

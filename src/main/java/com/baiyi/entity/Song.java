@@ -70,6 +70,11 @@ public class Song implements Serializable {
     private String url;
 
     /**
+     * 播放次数
+     */
+    private Long playCount;
+
+    /**
      * 0:删除 1:有效
      */
     @TableLogic

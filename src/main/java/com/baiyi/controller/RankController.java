@@ -63,5 +63,14 @@ public class RankController {
         return rankService.rankOfSongListId(Integer.parseInt(request.getParameter("songListId").trim()));
     }
 
+    /**
+     * 获取排行榜
+     * @return
+     */
+    @PostMapping("/getRankList")
+    public Object getRankList(){
+        return rankService.getRankList();
+    }
+
 }
 

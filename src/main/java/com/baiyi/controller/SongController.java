@@ -215,5 +215,15 @@ public class SongController {
     public Object selectAll(){
         return songService.selectAll();
     }
+
+    /**
+     * 增加播放量
+     * @param request
+     * @return
+     */
+    @PostMapping("/increasePlayCount")
+    public Object increasePlayCount(HttpServletRequest request) {
+        return songService.increaseCount(Integer.parseInt(request.getParameter("id").trim()));
+    }
 }
 

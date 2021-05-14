@@ -39,7 +39,7 @@ public class Collect implements Serializable {
     /**
      * 收藏类型（0歌曲1歌单）
      */
-    private Boolean type;
+    private Integer type;
 
     /**
      * 歌曲id

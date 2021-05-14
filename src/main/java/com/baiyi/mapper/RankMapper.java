@@ -1,8 +1,11 @@
 package com.baiyi.mapper;
 
 import com.baiyi.entity.Rank;
+import com.baiyi.response.RankListResponse;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * <p>
@@ -28,5 +31,7 @@ public interface RankMapper extends BaseMapper<Rank> {
      * @return 人数
      */
     int selectRankNum(Integer songListId);
+
+    List<RankListResponse> getRankList();
 
 }

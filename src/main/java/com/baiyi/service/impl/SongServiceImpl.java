@@ -75,6 +75,11 @@ public class SongServiceImpl extends ServiceImpl<SongMapper, Song> implements So
         return songMapper.updateById(song) > 0;
     }
 
+    @Override
+    public boolean increaseCount(Integer id) {
+        return songMapper.increaseCount(id) > 0;
+    }
+
     /**
      * 把前端传进来的 http 请求转换为 对象
      * @param request http请求
